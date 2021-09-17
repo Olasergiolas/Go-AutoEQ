@@ -11,6 +11,8 @@ Repositorio para almacenar el proyecto a realizar para la asignatura de Infraest
 
 ## Idea
 
+Facilitar el proceso de obtener perfiles de ecualización recomendados para auriculares que permitan mejorar la experiencia de sonido del usuario en MacOS. Para esto se utilizaría la información recopilada en el repositorio de [AutoEQ](https://github.com/jaakkopasanen/AutoEq), que contiene los hallazgos de diversos investigadores de la materia.
+
 ## Lenguaje de programación a utilizar
 
 Para la realización de este proyecto planteo como opciones los siguientes:
@@ -23,5 +25,5 @@ Para la realización de este proyecto planteo como opciones los siguientes:
 
 ## Licencia
 
-
+Este proyecto utiliza una licencia [GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/).
 
