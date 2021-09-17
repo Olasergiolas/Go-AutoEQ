@@ -4,10 +4,10 @@ Repositorio para almacenar el proyecto a realizar para la asignatura de Infraest
 
 ## Tabla de contenidos
 
-- [Idea](https://github.com/Olasergiolas/Proyecto-IV/Idea)
-- [Lenguaje de programación a utilizar](https://github.com/Olasergiolas/Proyecto-IV/lenguaje-de-programacion-a-utilizar)
-- [Instalación y dependencias](https://github.com/Olasergiolas/Proyecto-IV/instalacion-y-dependencias)
-- [Licencia](https://github.com/Olasergiolas/Proyecto-IV/licencia)
+- [Idea](#idea)
+- [Lenguaje de programación a utilizar](#lenguaje-de-programación-a-utilizar)
+- [Instalación y dependencias](#instalación-y-dependencias)
+- [Licencia](#licencia)
 
 ## Idea
 
