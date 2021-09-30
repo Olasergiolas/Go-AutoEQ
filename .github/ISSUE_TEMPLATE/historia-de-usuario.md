@@ -11,5 +11,3 @@ assignees: ''
 ## Contexto
 
 ## Resultado esperado
-
-## En caso contrario
