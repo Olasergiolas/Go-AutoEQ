@@ -7,7 +7,5 @@ assignees: ''
 
 ---
 
-# Descripción de la HU
-## Contexto
-
-## Resultado esperado
+## Descripción de la HU
+>Escriba aquí
