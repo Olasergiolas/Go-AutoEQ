@@ -8,4 +8,8 @@ Repositorio para almacenar el proyecto a realizar para la asignatura de Infraest
 
 ## Idea
 
-Facilitar el proceso de obtener perfiles de ecualización recomendados para auriculares que permitan mejorar la experiencia de sonido del usuario en MacOS. Para esto se utilizaría la información recopilada en el repositorio de [AutoEQ](https://github.com/jaakkopasanen/AutoEq), que contiene los hallazgos de diversos investigadores de la materia.
+Facilitar el proceso de obtener perfiles de ecualización recomendados para auriculares que permitan mejorar la experiencia de sonido del usuario en Linux. Para esto se utilizaría la información recopilada en el repositorio de [AutoEQ](https://github.com/jaakkopasanen/AutoEq), que contiene los hallazgos de diversos investigadores de la materia.
+
+## Documentación
+
+Puede acceder a la documentación del proyecto desde [aquí](docs).
