@@ -3,6 +3,7 @@ package autoeq
 type BandType string
 
 const (
+	Off       BandType = "Off"
 	Bell      BandType = "Bell"
 	HighPass  BandType = "High Pass"
 	HighShelf BandType = "High Shelf"
