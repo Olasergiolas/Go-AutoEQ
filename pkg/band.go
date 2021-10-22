@@ -1,4 +1,4 @@
-package AutoEQ
+package autoeq
 
 type BandType string
 
