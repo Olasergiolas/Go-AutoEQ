@@ -1,7 +1,9 @@
 package AutoEQ
 
+type Tipo string
+
 const (
-	Bell string = "Bell"
+	Bell Tipo = "Bell"
 )
 
 type banda struct {
@@ -12,4 +14,5 @@ type banda struct {
 	quality   float32
 	exclusive bool
 	slope     string
+	band_type Tipo
 }
