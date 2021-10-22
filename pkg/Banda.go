@@ -7,4 +7,5 @@ type banda struct {
 	silenced  bool
 	quality   float32
 	exclusive bool
+	slope     string
 }
