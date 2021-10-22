@@ -1,5 +1,9 @@
 package AutoEQ
 
+const (
+	Bell string = "Bell"
+)
+
 type banda struct {
 	freq      float32
 	gain      float32
