@@ -4,9 +4,10 @@ Repositorio para almacenar el proyecto a realizar para la asignatura de Infraest
 
 ## Tabla de contenidos :card_index_dividers:
 
-- [Idea](#idea)
-- [Instalación](#instalación)
-- [Documentación](#documentación)
+- [Idea](#idea-bulb)
+- [Instalación](#instalación-zap)
+- [Gestor de tareas](#gestor-de-tareas-rocket)
+- [Documentación](#documentación-memo)
 
 ## Idea :bulb:
 
