@@ -14,7 +14,52 @@ Facilitar el proceso de obtener perfiles de ecualización recomendados para auri
 
 ## Instalación :zap:
 
-¡Sección en construcción! :construction:
+#### 1. Pasos previos
+
+Antes de comenzar la instalación, es necesario tener Go previamente instalado en tu sistema. Para más información sobre cómo hacerlo accede [aquí](https://golang.org/doc/install).
+
+Además, aunque no es estrictamente necesario, se recomienda añadir el subdirectorio /bin del *GOPATH* al $PATH del sistema para tener fácil acceso a task, el task runner que este proyecto utiliza. 
+
+#### 2. Instalación de task
+
+Para instalar el gestor de tareas ***task*** en el directorio /usr/local/bin:
+
+```shell
+sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
+```
+
+#### 3. Clonado del repositorio
+
+Para clonar este repositorio en su sistema ejecute la siguiente orden:
+
+```shell
+git clone https://github.com/Olasergiolas/Go-AutoEQ.git
+```
+
+Ahora puedes acceder al nuevo directorio creado con:
+
+```shell
+cd Go-AutoEQ/
+```
+
+#### 4. Instalación del proyecto
+
+Por último, para instalar Go-AutoEQ solo es necesario ejecutar:
+
+```shell
+task install
+```
+
+Nota: Go-AutoEQ será instalado en `go env GOPATH`/bin y es posible que este directorio no esté incluido en el $PATH de tu sistema.
+
+## Gestor de tareas :rocket:
+
+Además del `task install` también están disponibles una serie de tareas como:
+
+- `task test`: Pondrá en marcha los tests del proyecto.
+- `task check`: Comprobará si existe algún error de sintaxis intentando compilar el proyecto.
+- `task installdeps`: Actualizará las dependencias del proyecto en el fichero *go.mod* y los checksum de estas en el fichero *go.sum* . 
+- `task fmt`: Dará formato a todos los archivos de código .go del proyecto para hacerlos más fácil de leer y mantener.
 
 ## Documentación :memo:
 
