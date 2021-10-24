@@ -19,6 +19,8 @@ Facilitar el proceso de obtener perfiles de ecualización recomendados para auri
 
 Antes de comenzar la instalación, es necesario tener Go previamente instalado en tu sistema. Para más información sobre cómo hacerlo accede [aquí](https://golang.org/doc/install).
 
+Además, aunque no es estrictamente necesario, se recomienda añadir el subdirectorio /bin del *GOPATH* al $PATH del sistema para tener fácil acceso a task, el task runner que este proyecto utiliza. 
+
 #### 2. Instalación de task
 
 Para instalar el gestor de tareas ***task*** en el directorio /usr/local/bin:
