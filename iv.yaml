@@ -1,0 +1,5 @@
+lenguaje: go
+entidad: pkg/autoeq/band.go
+automatizar:
+  fichero: Taskfile.yml
+  orden: task

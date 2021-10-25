@@ -1,0 +1,28 @@
+version: '3'
+
+tasks:
+  install:
+    cmds:
+      - go install cmd/go-autoeq.go
+      - cmd: echo "Go-AutoEQ ha sido instalado en $(go env GOPATH)/bin"
+        silent: true
+
+  check:
+    cmds:
+      - go build -o /dev/null pkg/*/*.go
+      - go build -o /dev/null cmd/*.go
+      - cmd: echo '¡Comprobación finalizada con éxito!'
+        silent: true
+
+  installdeps:
+    cmds:
+      - go mod tidy
+
+  test:
+    cmds:
+      - go test
+
+  fmt:
+    cmds:
+      - go fmt cmd/*.go
+      - go fmt pkg/*/*.go
