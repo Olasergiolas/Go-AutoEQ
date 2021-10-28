@@ -12,7 +12,7 @@ const (
 	Notch     BandType = "Notch"
 	Resonance BandType = "Resonance"
 
-	DefaultMode      string = "RLC (BT)"
+	DefaultBandMode  string = "RLC (BT)"
 	DefaultSlope     string = "x1"
 	DefaultSilenced  bool   = false
 	DefaultExclusive bool   = false
@@ -25,13 +25,13 @@ const (
 	MinQuality float32 = 0.0
 )
 
-type banda struct {
+type band struct {
 	freq      float32
 	gain      float32
+	quality   float32
+	band_type BandType
 	mode      string
 	silenced  bool
-	quality   float32
 	exclusive bool
 	slope     string
-	band_type BandType
 }
