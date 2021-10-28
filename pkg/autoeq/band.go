@@ -35,3 +35,8 @@ type band struct {
 	exclusive bool
 	slope     string
 }
+
+func NewBand(freq, gain, quality float32, band_type BandType) band {
+	b := band{freq, gain, quality, band_type, DefaultBandMode, DefaultSilenced, DefaultExclusive, DefaultSlope}
+	return b
+}
