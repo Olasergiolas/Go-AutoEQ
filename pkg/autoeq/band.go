@@ -26,14 +26,14 @@ const (
 )
 
 type band struct {
-	freq      float32
-	gain      float32
-	quality   float32
-	band_type BandType
-	mode      string
-	silenced  bool
-	exclusive bool
-	slope     string
+	Freq      float32
+	Gain      float32
+	Quality   float32
+	Band_type BandType
+	Mode      string
+	Silenced  bool
+	Exclusive bool
+	Slope     string
 }
 
 func NewBand(freq, gain, quality float32, band_type BandType) band {
