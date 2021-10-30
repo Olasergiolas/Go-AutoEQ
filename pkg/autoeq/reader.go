@@ -44,6 +44,11 @@ func GenerateBands(lines []string) []band {
 	var b band
 	var bands []band
 	var freq, gain, quality float64
+	var easyEffectsBandTypes = map[string]string{
+		"PK": "Bell",
+		"LS": "Low Shelf",
+		"HS": "High Shelf",
+	}
 
 	for _, l := range lines[1:] {
 		l_split := strings.Split(l, " ")
