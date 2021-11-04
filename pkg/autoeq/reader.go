@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	preampPos   int = 1
 	bandTypePos int = 3
 	freqPos     int = 5
 	gainPos     int = 8
@@ -40,6 +41,14 @@ func OpenParametricData(path string) []string {
 	return lines
 }
 
+func getPreamp(configHeadline string) float32 {
+	l_split := strings.Split(configHeadline, " ")
+	preamp := l_split[preampPos]
+	preampFloat, _ := strconv.ParseFloat(preamp, 32)
+
+	return float32(preampFloat)
+}
+
 func GenerateBands(lines []string) []band {
 	var b band
 	var bands []band
@@ -50,7 +59,7 @@ func GenerateBands(lines []string) []band {
 		"HS": "High Shelf",
 	}
 
-	for _, l := range lines[1:] {
+	for _, l := range lines {
 		l_split := strings.Split(l, " ")
 		freq, _ = strconv.ParseFloat(l_split[freqPos], 32)
 		gain, _ = strconv.ParseFloat(l_split[gainPos], 32)
