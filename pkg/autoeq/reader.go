@@ -33,7 +33,7 @@ func OpenParametricData(path string) []string {
 	defer data.Close()
 
 	sc := bufio.NewScanner(data)
-	lines := make([]string, 0)
+	var lines []string
 
 	for sc.Scan() {
 		lines = append(lines, sc.Text())
@@ -41,7 +41,7 @@ func OpenParametricData(path string) []string {
 	return lines
 }
 
-func getPreamp(configHeadline string) float32 {
+func GetPreamp(configHeadline string) float32 {
 	l_split := strings.Split(configHeadline, " ")
 	preamp := l_split[preampPos]
 	preampFloat, _ := strconv.ParseFloat(preamp, 32)
