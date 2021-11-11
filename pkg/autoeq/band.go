@@ -1,18 +1,7 @@
 package autoeq
 
-type BandType string
-
 const (
-	Off       BandType = "Off"
-	Bell      BandType = "Bell"
-	HighPass  BandType = "High Pass"
-	HighShelf BandType = "High Shelf"
-	LowPass   BandType = "Low Pass"
-	LowShelf  BandType = "Low Shelf"
-	Notch     BandType = "Notch"
-	Resonance BandType = "Resonance"
-
-	DefaultMode      string = "RLC (BT)"
+	DefaultBandMode  string = "RLC (BT)"
 	DefaultSlope     string = "x1"
 	DefaultSilenced  bool   = false
 	DefaultExclusive bool   = false
@@ -25,13 +14,18 @@ const (
 	MinQuality float32 = 0.0
 )
 
-type banda struct {
-	freq      float32
-	gain      float32
-	mode      string
-	silenced  bool
-	quality   float32
-	exclusive bool
-	slope     string
-	band_type BandType
+type band struct {
+	Freq      float32
+	Gain      float32
+	Quality   float32
+	Band_type string
+	Mode      string
+	Silenced  bool
+	Exclusive bool
+	Slope     string
+}
+
+func NewBand(freq, gain, quality float32, band_type string) band {
+	b := band{freq, gain, quality, band_type, DefaultBandMode, DefaultSilenced, DefaultExclusive, DefaultSlope}
+	return b
 }
