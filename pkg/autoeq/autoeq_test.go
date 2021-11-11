@@ -1,6 +1,7 @@
 package autoeq
 
 import (
+	"os"
 	"reflect"
 	"testing"
 
@@ -49,4 +50,18 @@ func TestGenerateBands(t *testing.T) {
 
 	assert.Equal(len(returnedBands), wantedBandsLen, "Wrong number of bands generated")
 	assert.Equal(returnedBands[0], wantedBand, "Unexpected generated band")
+}
+
+func TestExportEasyEffectsProfile(t *testing.T) {
+	assert := assert.New((t))
+	o := NewOutput(equalizer{})
+	t.Log("Testing the creation of a json file")
+	ExportEasyEffectsProfile(o, "test")
+
+	assert.DirExists("profiles/EasyEffects", "Export path not created!")
+	assert.FileExists("profiles/EasyEffects/test.json", "Export path not created!")
+	err := os.RemoveAll("profiles")
+	if err != nil {
+		assert.FailNow("Error while cleaning up!")
+	}
 }
