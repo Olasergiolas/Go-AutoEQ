@@ -3,9 +3,12 @@ package autoeq
 import (
 	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestOpenParametricData(t *testing.T) {
+	assert := assert.New((t))
 	t.Log("Parametric EQ config reading test")
 
 	fixture := "../../docs/examples/AutoEQ_parametric.txt"
@@ -13,16 +16,12 @@ func TestOpenParametricData(t *testing.T) {
 	returnedLinesType := reflect.TypeOf(returnedLines).String()
 	wantedLen := 11
 
-	if len(returnedLines) != wantedLen {
-		t.Error("Wrong number of bands read")
-	}
-
-	if returnedLinesType != "[]string" {
-		t.Error("Expected []string but found " + returnedLinesType)
-	}
+	assert.Equal(len(returnedLines), wantedLen, "Wrong number of bands read")
+	assert.Equal(returnedLinesType, "[]string", "Expected []string but found "+returnedLinesType)
 }
 
 func TestCreateBandMap(t *testing.T) {
+	assert := assert.New((t))
 	t.Log("Band map creation test")
 
 	fixture := []band{
@@ -33,16 +32,12 @@ func TestCreateBandMap(t *testing.T) {
 	wantedKey := "band1"
 	wantedType := "Low Shelf"
 
-	if len(returnedBandMap) != len(fixture) {
-		t.Error("Wrong number of bands in map")
-	}
-
-	if returnedBandMap[wantedKey].Band_type != wantedType {
-		t.Error("Error assigning keys to bands")
-	}
+	assert.Equal(len(returnedBandMap), len(fixture), "Wrong number of bands in map")
+	assert.Equal(returnedBandMap[wantedKey].Band_type, wantedType, "Error assigning keys to bands")
 }
 
 func TestGenerateBands(t *testing.T) {
+	assert := assert.New((t))
 	t.Log("Testing the generation of bands")
 
 	fixture := []string{
@@ -52,11 +47,6 @@ func TestGenerateBands(t *testing.T) {
 	wantedBand := NewBand(4871, 22.1, 0.65, "Bell")
 	wantedBandsLen := len(fixture)
 
-	if len(returnedBands) != wantedBandsLen {
-		t.Error("Wrong number of bands generated")
-	}
-
-	if returnedBands[0] != wantedBand {
-		t.Error("Unexpected generated band")
-	}
+	assert.Equal(len(returnedBands), wantedBandsLen, "Wrong number of bands generated")
+	assert.Equal(returnedBands[0], wantedBand, "Unexpected generated band")
 }
