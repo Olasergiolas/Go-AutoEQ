@@ -16,7 +16,7 @@ tasks:
 
   installdeps:
     cmds:
-      - go mod tidy
+      - go mod download
 
   test:
     cmds:
