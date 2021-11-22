@@ -56,12 +56,18 @@ func TestExportEasyEffectsProfile(t *testing.T) {
 	assert := assert.New((t))
 	o := NewOutput(equalizer{})
 	t.Log("Testing the creation of a json file")
+
+	err := os.Chdir(os.Getenv("GOPATH"))
+	if err != nil {
+		assert.FailNow("Error while trying to cd to GOPATH")
+	}
+
 	ExportEasyEffectsProfile(o, "test")
 
 	assert.DirExists("profiles/EasyEffects", "Export path not created!")
 	assert.FileExists("profiles/EasyEffects/test.json", "Export path not created!")
-	err := os.RemoveAll("profiles")
-	if err != nil {
+	err2 := os.RemoveAll("profiles")
+	if err2 != nil {
 		assert.FailNow("Error while cleaning up!")
 	}
 }
