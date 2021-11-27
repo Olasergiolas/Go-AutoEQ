@@ -1,0 +1,16 @@
+version: 2.1
+
+jobs:
+  test-app:
+    docker:
+      - image: olasergiolas/go-autoeq:latest
+    steps:
+      - checkout
+      - run:
+          name: "Test app"
+          command: "task test"
+
+workflows:
+  test-app-workflow:
+    jobs:
+      - test-app
