@@ -1,0 +1,22 @@
+name: Run project tests using Github Actions
+
+on: push
+
+jobs:
+  run_tests:
+    strategy:
+      matrix:
+        golang: ['1.16', '1.17']
+    name: Run tests Go ${{ matrix.golang }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      
+      - name: Setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.golang }}
+
+      - name: Run tests
+        run: go test -v ./...
