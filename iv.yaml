@@ -4,3 +4,4 @@ automatizar:
   fichero: Taskfile.yml
   orden: task
 test: pkg/autoeq/autoeq_test.go
+CI: .circleci/config.yml
