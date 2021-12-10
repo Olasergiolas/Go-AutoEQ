@@ -3,6 +3,7 @@ package autoeq
 import (
 	"os"
 	"reflect"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -57,17 +58,19 @@ func TestExportEasyEffectsProfile(t *testing.T) {
 	o := NewOutput(equalizer{})
 	t.Log("Testing the creation of a json file")
 
-	err := os.Chdir(os.Getenv("GOPATH"))
+	tmpDir := "/tmp"
+	tmpFile := "easyeffects" + strconv.Itoa(os.Getpid())
+	err := os.Chdir(tmpDir)
 	if err != nil {
 		assert.FailNow("Error while trying to cd to GOPATH")
 	}
 
-	ExportEasyEffectsProfile(o, "test")
+	ExportEasyEffectsProfile(o, tmpFile)
 
 	assert.DirExists("profiles/EasyEffects", "Export path not created!")
-	assert.FileExists("profiles/EasyEffects/test.json", "Export path not created!")
-	err2 := os.RemoveAll("profiles")
-	if err2 != nil {
+	assert.FileExists("profiles/EasyEffects/"+tmpFile+".json", "Exported file not created!")
+	dirErr := os.RemoveAll("profiles")
+	if dirErr != nil {
 		assert.FailNow("Error while cleaning up!")
 	}
 }
