@@ -3,6 +3,7 @@ package autoeq
 import (
 	"errors"
 	"os"
+	"runtime"
 
 	"github.com/sirupsen/logrus"
 )
@@ -21,22 +22,27 @@ const (
 
 var (
 	eventsMsg = map[ErrorType]error{
-		Success:                errors.New("Success! %d"),
-		ParametricDataNotFound: errors.New("Error %d, couldn't open the file containing the param. data"),
-		Undefined:              errors.New("Unkown event code %d"),
+		Success:                errors.New("success! %d"),
+		ParametricDataNotFound: errors.New("error %d, couldn't open the file containing the param. data"),
+		Undefined:              errors.New("unkown event code %d"),
 	}
 
 	defaultFields = logrus.Fields{
-		"appname": "Go-AutoEQ",
+		"appname":    "Go-AutoEQ",
+		"go-version": runtime.Version(),
 	}
 )
 
-func NewLogger() MyLogger {
+func NewWrapper(logger *logrus.Logger) *MyLogger {
+	return &MyLogger{logger}
+}
+
+func NewLogger() *logrus.Logger {
 	logger := logrus.New()
 	logger.SetFormatter(&logrus.JSONFormatter{})
 	logrus.SetOutput(os.Stdout)
 
-	return MyLogger{logger}
+	return logger
 }
 
 func (logger MyLogger) Log(errCode uint) {

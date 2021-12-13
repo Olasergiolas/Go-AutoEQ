@@ -21,11 +21,11 @@ func NewOutput(eq equalizer) outputWrapper {
 }
 
 func AutoeqToEasyEffects(configPath string) outputWrapper {
-	lines, err := OpenParametricData(configPath)
+	lines, _ := OpenParametricData(configPath)
 
-	if err != Success {
+	/*if err != Success {
 		NewLogger().Log(uint(err))
-	}
+	}*/
 
 	preamp := GetPreamp(lines[0])
 	bands := GenerateBands(lines[1:])
