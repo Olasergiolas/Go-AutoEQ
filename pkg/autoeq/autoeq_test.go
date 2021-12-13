@@ -14,12 +14,14 @@ func TestOpenParametricData(t *testing.T) {
 	t.Log("Parametric EQ config reading test")
 
 	fixture := "../../docs/examples/AutoEQ_parametric.txt"
-	returnedLines := OpenParametricData(fixture)
+	returnedLines, err := OpenParametricData(fixture)
+	assert.EqualValues(Success, err, "Error while opening parametric data")
+
 	returnedLinesType := reflect.TypeOf(returnedLines).String()
 	wantedLen := 11
 
-	assert.Equal(len(returnedLines), wantedLen, "Wrong number of bands read")
-	assert.Equal(returnedLinesType, "[]string", "Expected []string but found "+returnedLinesType)
+	assert.Equal(wantedLen, len(returnedLines), "Wrong number of bands read")
+	assert.Equal("[]string", returnedLinesType, "Expected []string but found "+returnedLinesType)
 }
 
 func TestCreateBandMap(t *testing.T) {

@@ -37,7 +37,7 @@ func OpenParametricData(path string) ([]string, ErrorType) {
 	for sc.Scan() {
 		lines = append(lines, sc.Text())
 	}
-	return lines, 0
+	return lines, Success
 }
 
 func GetPreamp(configHeadline string) float32 {

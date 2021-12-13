@@ -23,7 +23,7 @@ func NewOutput(eq equalizer) outputWrapper {
 func AutoeqToEasyEffects(configPath string) outputWrapper {
 	lines, err := OpenParametricData(configPath)
 
-	if err != 0 {
+	if err != Success {
 		NewLogger().Log(uint(err))
 	}
 
