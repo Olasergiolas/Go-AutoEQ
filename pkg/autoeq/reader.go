@@ -2,7 +2,6 @@ package autoeq
 
 import (
 	"bufio"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -25,10 +24,10 @@ func CreateBandMap(bands []band) map[string]band {
 	return m
 }
 
-func OpenParametricData(path string) []string {
+func OpenParametricData(path string) ([]string, ErrorType) {
 	data, err := os.Open(path)
 	if err != nil {
-		log.Fatal(err)
+		return nil, ParametricDataNotFound
 	}
 	defer data.Close()
 
@@ -38,7 +37,7 @@ func OpenParametricData(path string) []string {
 	for sc.Scan() {
 		lines = append(lines, sc.Text())
 	}
-	return lines
+	return lines, 0
 }
 
 func GetPreamp(configHeadline string) float32 {
