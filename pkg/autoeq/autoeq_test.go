@@ -35,7 +35,7 @@ func TestCreateBandMap(t *testing.T) {
 	wantedType := "Low Shelf"
 
 	assert.Equal(len(returnedBandMap), len(fixture), "Wrong number of bands in map")
-	assert.Equal(returnedBandMap[wantedKey].Band_type, wantedType, "Error assigning keys to bands")
+	assert.Equal(returnedBandMap[wantedKey].BandType, wantedType, "Error assigning keys to bands")
 }
 
 func TestGenerateBands(t *testing.T) {
