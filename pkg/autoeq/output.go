@@ -35,7 +35,7 @@ func AutoeqToEasyEffects(configPath string) outputWrapper {
 	return output
 }
 
-func ExportEasyEffectsProfile(o outputWrapper, name string) {
+func ExportEasyEffectsProfile(o outputWrapper, name string) *ErrorEvent {
 	json, _ := json.MarshalIndent(o, "", "  ")
 	dirPerm := os.FileMode(0766)
 	filePerm := os.FileMode(0644)
@@ -43,6 +43,8 @@ func ExportEasyEffectsProfile(o outputWrapper, name string) {
 	dirErr := os.MkdirAll("./profiles/EasyEffects", dirPerm)
 	fileErr := os.WriteFile("./profiles/EasyEffects/"+name+".json", json, filePerm)
 	if dirErr != nil || fileErr != nil {
-		panic("Error while exporting profile!")
+		return configNotExportedEvent
 	}
+
+	return nil
 }

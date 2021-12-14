@@ -29,8 +29,8 @@ func TestCreateBandMap(t *testing.T) {
 	t.Log("Band map creation test")
 
 	fixture := []band{
-		NewBand(10.0, 5.0, 1, "Bell"),
-		NewBand(5.0, 10.0, 0.7, "Low Shelf"),
+		NewBand(maxFreq, maxGain, maxQuality, "Bell"),
+		NewBand(minFreq, minGain, minQuality, "Low Shelf"),
 	}
 	returnedBandMap := CreateBandMap(fixture)
 	wantedKey := "band1"
@@ -45,14 +45,14 @@ func TestGenerateBands(t *testing.T) {
 	t.Log("Testing the generation of bands")
 
 	fixture := []string{
-		"Filter 1: ON PK Fc 4871 Hz Gain 22.1 dB Q 0.65",
+		"Filter 1: ON PK Fc 4871 Hz Gain 20.0 dB Q 0.65",
 	}
 	returnedBands := GenerateBands(fixture)
-	wantedBand := NewBand(4871, 22.1, 0.65, "Bell")
+	wantedBand := NewBand(4871, maxGain, 0.65, "Bell")
 	wantedBandsLen := len(fixture)
 
-	assert.Equal(len(returnedBands), wantedBandsLen, "Wrong number of bands generated")
-	assert.Equal(returnedBands[0], wantedBand, "Unexpected generated band")
+	assert.Equal(wantedBandsLen, len(returnedBands), "Wrong number of bands generated")
+	assert.Equal(wantedBand, returnedBands[0], "Unexpected generated band")
 }
 
 func TestExportEasyEffectsProfile(t *testing.T) {
@@ -67,10 +67,8 @@ func TestExportEasyEffectsProfile(t *testing.T) {
 		assert.FailNow("Error while trying to cd to GOPATH")
 	}
 
-	ExportEasyEffectsProfile(o, tmpFile)
-
-	assert.DirExists("profiles/EasyEffects", "Export path not created!")
-	assert.FileExists("profiles/EasyEffects/"+tmpFile+".json", "Exported file not created!")
+	err2 := ExportEasyEffectsProfile(o, tmpFile)
+	assert.Nil(err2, "Exported path/"+tmpFile+".json not created!")
 	dirErr := os.RemoveAll("profiles")
 	if dirErr != nil {
 		assert.FailNow("Error while cleaning up!")

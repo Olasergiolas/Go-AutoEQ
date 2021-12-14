@@ -25,7 +25,31 @@ type band struct {
 	Slope     string
 }
 
+func correctOutOfBounds(arg *float32, lower, upper float32) bool {
+	res := true
+
+	if *arg < lower {
+		*arg = lower
+	} else if *arg > upper {
+		*arg = upper
+	} else {
+		res = false
+	}
+
+	return res
+}
+
 func NewBand(freq, gain, quality float32, band_type string) band {
+	logger := NewLogger()
+
+	if correctOutOfBounds(&freq, minFreq, maxFreq) {
+		logger.InvalidArgRangeLog("freq")
+	} else if correctOutOfBounds(&gain, minGain, maxGain) {
+		logger.InvalidArgRangeLog("gain")
+	} else if correctOutOfBounds(&quality, minQuality, maxQuality) {
+		logger.InvalidArgRangeLog("quality")
+	}
+
 	b := band{freq, gain, quality, band_type, defaultBandMode, defaultSilenced, defaultExclusive, defaultSlope}
 	return b
 }
