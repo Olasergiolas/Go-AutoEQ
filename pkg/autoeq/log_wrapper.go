@@ -1,7 +1,6 @@
 package autoeq
 
 import (
-	"errors"
 	"os"
 	"runtime"
 
@@ -12,32 +11,26 @@ type MyLogger struct {
 	*logrus.Logger
 }
 
-type ErrorType uint
+type ErrorEvent struct {
+	id  uint
+	msg string
+}
 
-const (
-	Success = iota
-	ParametricDataNotFound
-	Undefined
-)
+var defaultFields = logrus.Fields{
+	"appname":    "Go-AutoEQ",
+	"go-version": runtime.Version(),
+}
 
 var (
-	eventsMsg = map[ErrorType]error{
-		Success:                errors.New("success! %d"),
-		ParametricDataNotFound: errors.New("error %d, couldn't open the file containing the param. data"),
-		Undefined:              errors.New("unkown event code %d"),
-	}
-
-	defaultFields = logrus.Fields{
-		"appname":    "Go-AutoEQ",
-		"go-version": runtime.Version(),
-	}
+	successEvent       = &ErrorEvent{0, "success: %s"}
+	fileNotOpenedEvent = &ErrorEvent{1, "couldn't open the requested file: %s"}
 )
 
-func NewWrapper(logger *logrus.Logger) *MyLogger {
+func newWrapper(logger *logrus.Logger) *MyLogger {
 	return &MyLogger{logger}
 }
 
-func NewLogger() *logrus.Logger {
+func newBaseLogger() *logrus.Logger {
 	logger := logrus.New()
 	logger.SetFormatter(&logrus.JSONFormatter{})
 	logrus.SetOutput(os.Stdout)
@@ -45,13 +38,17 @@ func NewLogger() *logrus.Logger {
 	return logger
 }
 
-func (logger MyLogger) Log(errCode uint) {
-	msg, ok := eventsMsg[ErrorType(errCode)]
-	code := errCode
+func NewLogger() *MyLogger {
+	baseLogger := newBaseLogger()
+	wrapper := newWrapper(baseLogger)
 
-	if !ok {
-		msg = eventsMsg[Undefined]
-		code = Undefined
-	}
-	logger.WithFields(defaultFields).Infof(msg.Error(), code)
+	return wrapper
+}
+
+func (l *MyLogger) FileNotOpenedLog(path string) {
+	l.WithFields(defaultFields).Errorf(fileNotOpenedEvent.msg, path)
+}
+
+func (l *MyLogger) SuccessLog(context string) {
+	l.WithFields(defaultFields).Infof(successEvent.msg, context)
 }

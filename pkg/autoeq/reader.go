@@ -24,10 +24,10 @@ func CreateBandMap(bands []band) map[string]band {
 	return m
 }
 
-func OpenParametricData(path string) ([]string, ErrorType) {
+func OpenParametricData(path string) ([]string, *ErrorEvent) {
 	data, err := os.Open(path)
 	if err != nil {
-		return nil, ParametricDataNotFound
+		return nil, fileNotOpenedEvent
 	}
 	defer data.Close()
 
@@ -37,7 +37,7 @@ func OpenParametricData(path string) ([]string, ErrorType) {
 	for sc.Scan() {
 		lines = append(lines, sc.Text())
 	}
-	return lines, Success
+	return lines, nil
 }
 
 func GetPreamp(configHeadline string) float32 {

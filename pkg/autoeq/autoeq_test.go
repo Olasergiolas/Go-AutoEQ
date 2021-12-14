@@ -15,7 +15,7 @@ func TestOpenParametricData(t *testing.T) {
 
 	fixture := "../../docs/examples/AutoEQ_parametric.txt"
 	returnedLines, err := OpenParametricData(fixture)
-	assert.EqualValues(Success, err, "Error while opening parametric data")
+	assert.Nil(err, "Error while opening parametric data")
 
 	returnedLinesType := reflect.TypeOf(returnedLines).String()
 	wantedLen := 11
