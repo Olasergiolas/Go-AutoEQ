@@ -23,7 +23,9 @@ func GetLogPath() string {
 }
 
 func searchLogPath() {
-	resp, err := cli.KV.Get(context.Background(), logPathEnvVar)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	resp, err := cli.KV.Get(ctx, logPathEnvVar)
+	cancel()
 
 	if err != nil || resp.Count == 0 {
 		currentLogPath = os.Getenv(logPathEnvVar)
