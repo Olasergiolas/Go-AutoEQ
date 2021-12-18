@@ -4,11 +4,11 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog"
 )
 
 type MyLogger struct {
-	*logrus.Logger
+	*zerolog.Logger
 }
 
 type ErrorEvent struct {
@@ -16,7 +16,7 @@ type ErrorEvent struct {
 	msg string
 }
 
-var defaultFields = logrus.Fields{
+var defaultFields = map[string]interface{}{
 	"appname":    "Go-AutoEQ",
 	"go-version": runtime.Version(),
 }
@@ -30,19 +30,20 @@ var (
 	configInfoEvent        = &ErrorEvent{5, "var %s: value %s"}
 )
 
-func newWrapper(logger *logrus.Logger) *MyLogger {
+func newWrapper(logger *zerolog.Logger) *MyLogger {
 	return &MyLogger{logger}
 }
 
-func newBaseLogger() *logrus.Logger {
-	logger := logrus.New()
-	logger.SetFormatter(&logrus.JSONFormatter{})
+func newBaseLogger() *zerolog.Logger {
+	var logger zerolog.Logger
 	f, err := prepareLogFile()
 
 	if err == nil {
-		logger.SetOutput(f)
+		logger = zerolog.New(f)
+	} else {
+		logger = zerolog.New(os.Stdout)
 	}
-	return logger
+	return &logger
 }
 
 func NewLogger() *MyLogger {
@@ -64,25 +65,25 @@ func prepareLogFile() (*os.File, error) {
 }
 
 func (l *MyLogger) SuccessLog(context string) {
-	l.WithFields(defaultFields).Infof(successEvent.msg, context)
+	l.Info().Timestamp().Fields(defaultFields).Msgf(successEvent.msg, context)
 }
 
 func (l *MyLogger) FileNotOpenedLog(path string) {
-	l.WithFields(defaultFields).Errorf(fileNotOpenedEvent.msg, path)
+	l.Error().Timestamp().Fields(defaultFields).Msgf(fileNotOpenedEvent.msg, path)
 }
 
 func (l *MyLogger) ConfigNotExportedLog(path string) {
-	l.WithFields(defaultFields).Errorf(configNotExportedEvent.msg, path)
+	l.Error().Timestamp().Fields(defaultFields).Msgf(configNotExportedEvent.msg, path)
 }
 
 func (l *MyLogger) InvalidArgRangeLog(arg string) {
-	l.WithFields(defaultFields).Warnf(invalidArgRangeEvent.msg, arg)
+	l.Warn().Timestamp().Fields(defaultFields).Msgf(invalidArgRangeEvent.msg, arg)
 }
 
 func (l *MyLogger) EnvVarMissingLog(envVar string) {
-	l.WithFields(defaultFields).Infof(missingEnvVarEvent.msg, envVar)
+	l.Warn().Timestamp().Fields(defaultFields).Msgf(missingEnvVarEvent.msg, envVar)
 }
 
 func (l *MyLogger) ConfigInfoLog(ident, value string) {
-	l.WithFields(defaultFields).Infof(configInfoEvent.msg, ident, value)
+	l.Info().Timestamp().Fields(defaultFields).Msgf(configInfoEvent.msg, ident, value)
 }
