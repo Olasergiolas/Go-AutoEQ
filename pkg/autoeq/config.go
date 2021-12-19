@@ -12,7 +12,6 @@ import (
 var (
 	cli             *clientv3.Client
 	logPathEnvVar   = "LOGPATH"
-	endpointEnvVar  = "ENDPOINT"
 	defaultLogPath  = "/tmp/go-autoeq.log"
 	defaultEndpoint = "localhost:2379"
 	currentLogPath  string
@@ -38,13 +37,17 @@ func searchLogPath() {
 }
 
 func init() {
-	endpoint := os.Getenv(endpointEnvVar)
+	endpoint := os.Getenv("ENDPOINT")
+	user := os.Getenv("ETCDUSER")
+	pass := os.Getenv("ETCDPASSWORD")
 
 	if endpoint == "" {
 		endpoint = defaultEndpoint
 	}
 
 	cli, _ = clientv3.New(clientv3.Config{
+		Username:    user,
+		Password:    pass,
 		Endpoints:   []string{endpoint},
 		DialTimeout: 5 * time.Second,
 	})
