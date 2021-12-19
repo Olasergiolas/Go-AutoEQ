@@ -9,3 +9,4 @@
 - [Contenedor Docker para tests](dockerfile.md)
 - [Integración Continua](CI.md)
 - [Registro de eventos](logging.md)
+- [Configuración remota](remote-config.md)

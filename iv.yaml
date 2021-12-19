@@ -5,3 +5,4 @@ automatizar:
   orden: task
 test: pkg/autoeq/autoeq_test.go
 CI: .circleci/config.yml
+configuracion: pkg/autoeq/config.go
