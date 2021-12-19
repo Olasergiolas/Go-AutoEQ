@@ -17,3 +17,7 @@ Es un sistema de almacenamiento distribuido de parejas clave-valor escrito en Go
 Además, por motivos de seguridad y de buenas prácticas, querremos poder tener una forma de evitar hardcodear en el cliente parámetros como por ejemplo la dirección IP o claves de acceso al servidor etcd. Esto se puede conseguir haciendo uso de variables de entorno cargadas desde un fichero local secreto.
 
 La solución elegida para gestionar variables de entorno deberá de ser fácil de usar y estar correctamente mantenida. En Go, las principales opciones son [Godotenv](https://github.com/joho/godotenv) y [Viper](https://github.com/spf13/viper).
+#### 1. Viper
+Viper es la opción de referencia cuando se trata de configuración en Go. Entre sus funciones, Viper es capaz no solo de gestionar ficheros de configuración para usar su contenido como variables de entorno sino que también de conectarse directamente con etcd y obtener la configuración del almacenamiento distribuido. Aunque usar Viper nos ahorraría la necesidad de usar dos herramientas distintas, su uso y configuración resultan algo más complejos y no he sido capaz de conseguir utilizarlo.
+#### 2. Godotenv
+Es la herramienta destinada a esta tarea más simple en Go. Cumple su función perfectamente y gracias a su paquete autoload no es necesario siquiera escribir una sola línea de código más allá del import para que cargue las variables de entorno de un fichero ".env". Es por su simplicidad, facilidad de uso y el buen estado de su repositorio de Github por lo que será la opción elegida.
