@@ -45,14 +45,20 @@ func init() {
 		endpoint = defaultEndpoint
 	}
 
-	cli, _ = clientv3.New(clientv3.Config{
+	var err error
+	cli, err = clientv3.New(clientv3.Config{
 		Username:    user,
 		Password:    pass,
 		Endpoints:   []string{endpoint},
 		DialTimeout: 5 * time.Second,
 	})
 
-	searchLogPath()
+	if err != nil {
+		currentLogPath = defaultLogPath
+	} else {
+		searchLogPath()
+		defer cli.Close()
+	}
+
 	NewLogger().ConfigInfoLog(logPathEnvVar, currentLogPath)
-	defer cli.Close()
 }
