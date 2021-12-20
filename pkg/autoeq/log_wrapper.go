@@ -42,7 +42,7 @@ func newBaseLogger() *zerolog.Logger {
 		writer = f
 	}
 
-	logger := zerolog.New(writer).With().Timestamp().Logger()
+	logger := zerolog.New(writer).With().Timestamp().Fields(defaultFields).Logger()
 	return &logger
 }
 
@@ -65,25 +65,25 @@ func prepareLogFile() (*os.File, error) {
 }
 
 func (l *MyLogger) SuccessLog(context string) {
-	l.Info().Fields(defaultFields).Msgf(successEvent.msg, context)
+	l.Info().Msgf(successEvent.msg, context)
 }
 
 func (l *MyLogger) FileNotOpenedLog(path string) {
-	l.Error().Fields(defaultFields).Msgf(fileNotOpenedEvent.msg, path)
+	l.Error().Msgf(fileNotOpenedEvent.msg, path)
 }
 
 func (l *MyLogger) ConfigNotExportedLog(path string) {
-	l.Error().Fields(defaultFields).Msgf(configNotExportedEvent.msg, path)
+	l.Error().Msgf(configNotExportedEvent.msg, path)
 }
 
 func (l *MyLogger) InvalidArgRangeLog(arg string) {
-	l.Warn().Fields(defaultFields).Msgf(invalidArgRangeEvent.msg, arg)
+	l.Warn().Msgf(invalidArgRangeEvent.msg, arg)
 }
 
 func (l *MyLogger) EnvVarMissingLog(envVar string) {
-	l.Warn().Fields(defaultFields).Msgf(missingEnvVarEvent.msg, envVar)
+	l.Warn().Msgf(missingEnvVarEvent.msg, envVar)
 }
 
 func (l *MyLogger) ConfigInfoLog(ident, value string) {
-	l.Info().Fields(defaultFields).Msgf(configInfoEvent.msg, ident, value)
+	l.Info().Msgf(configInfoEvent.msg, ident, value)
 }
