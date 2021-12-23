@@ -22,6 +22,7 @@ var defaultFields = map[string]interface{}{
 }
 
 var loggerInstance *MyLogger
+var config *Config
 var (
 	successEvent           = &ErrorEvent{0, "success: %s"}
 	fileNotOpenedEvent     = &ErrorEvent{1, "couldn't open the requested file: %s"}
@@ -56,8 +57,8 @@ func NewLogger() *MyLogger {
 }
 
 func prepareLogFile() (*os.File, error) {
-	path := GetLogPath()
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	config = GetConfig()
+	f, err := os.OpenFile(config.logpath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 
 	if err != nil {
 		return nil, err
@@ -69,6 +70,7 @@ func prepareLogFile() (*os.File, error) {
 func GetLogger() *MyLogger {
 	if loggerInstance == nil {
 		loggerInstance = NewLogger()
+		loggerInstance.ConfigInfoLog(logPathEnvVar, config.logpath)
 	}
 
 	return loggerInstance

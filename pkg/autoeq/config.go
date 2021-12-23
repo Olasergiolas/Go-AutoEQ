@@ -14,14 +14,14 @@ var (
 	logPathEnvVar   = "LOGPATH"
 	defaultLogPath  = "/tmp/go-autoeq.log"
 	defaultEndpoint = "localhost:2379"
-	currentLogPath  string
 )
 
-func GetLogPath() string {
-	return currentLogPath
+type Config struct {
+	logpath string
 }
 
-func searchLogPath() {
+func searchLogPath() string {
+	var currentLogPath string
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	resp, err := cli.KV.Get(ctx, logPathEnvVar)
 	cancel()
@@ -30,14 +30,17 @@ func searchLogPath() {
 		currentLogPath = os.Getenv(logPathEnvVar)
 		if currentLogPath == "" {
 			currentLogPath = defaultLogPath
-			GetLogger().EnvVarMissingLog(logPathEnvVar)
 		}
 	} else {
 		currentLogPath = string(resp.Kvs[0].Value)
 	}
+
+	return currentLogPath
 }
 
-func init() {
+func GetConfig() *Config {
+	var currentLogPath string
+
 	endpoint := os.Getenv("ENDPOINT")
 	user := os.Getenv("ETCDUSER")
 	pass := os.Getenv("ETCDPASSWORD")
@@ -57,9 +60,9 @@ func init() {
 	if err != nil {
 		currentLogPath = defaultLogPath
 	} else {
-		searchLogPath()
+		currentLogPath = searchLogPath()
 		defer cli.Close()
 	}
 
-	GetLogger().ConfigInfoLog(logPathEnvVar, currentLogPath)
+	return &Config{currentLogPath}
 }
