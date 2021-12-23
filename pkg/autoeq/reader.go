@@ -52,6 +52,7 @@ func GenerateBands(lines []string) []band {
 	var b band
 	var bands []band
 	var freq, gain, quality float64
+	var bandType, bandTypeConversion string
 	var easyEffectsBandTypes = map[string]string{
 		"PK": "Bell",
 		"LS": "Low Shelf",
@@ -63,9 +64,15 @@ func GenerateBands(lines []string) []band {
 		freq, _ = strconv.ParseFloat(lSplit[freqPos], 32)
 		gain, _ = strconv.ParseFloat(lSplit[gainPos], 32)
 		quality, _ = strconv.ParseFloat(lSplit[qualityPos], 32)
+		bandType = lSplit[bandTypePos]
+		bandTypeConversion = easyEffectsBandTypes[bandType]
 
-		b = NewBand(float32(freq), float32(gain), float32(quality), easyEffectsBandTypes[lSplit[bandTypePos]])
-		bands = append(bands, b)
+		if bandTypeConversion == "" {
+			GetLogger().UnexpectedValueLog("bandType", bandType)
+		} else {
+			b = NewBand(float32(freq), float32(gain), float32(quality), bandTypeConversion)
+			bands = append(bands, b)
+		}
 	}
 	return bands
 }

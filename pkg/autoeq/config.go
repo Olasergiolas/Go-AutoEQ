@@ -30,6 +30,7 @@ func searchLogPath() {
 		currentLogPath = os.Getenv(logPathEnvVar)
 		if currentLogPath == "" {
 			currentLogPath = defaultLogPath
+			GetLogger().EnvVarMissingLog(logPathEnvVar)
 		}
 	} else {
 		currentLogPath = string(resp.Kvs[0].Value)

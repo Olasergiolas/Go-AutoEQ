@@ -29,6 +29,7 @@ var (
 	invalidArgRangeEvent   = &ErrorEvent{3, "argument %s is out of expected bounds"}
 	missingEnvVarEvent     = &ErrorEvent{4, "env variable %s does not exist"}
 	configInfoEvent        = &ErrorEvent{5, "var %s: value %s"}
+	unexpectedValueEvent   = &ErrorEvent{6, "unexpected var %s: received value %s"}
 )
 
 func newWrapper(logger *zerolog.Logger) *MyLogger {
@@ -95,4 +96,8 @@ func (l *MyLogger) EnvVarMissingLog(envVar string) {
 
 func (l *MyLogger) ConfigInfoLog(ident, value string) {
 	l.Info().Msgf(configInfoEvent.msg, ident, value)
+}
+
+func (l *MyLogger) UnexpectedValueLog(ident, value string) {
+	l.Warn().Msgf(unexpectedValueEvent.msg, ident, value)
 }
