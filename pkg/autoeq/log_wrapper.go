@@ -21,6 +21,7 @@ var defaultFields = map[string]interface{}{
 	"go-version": runtime.Version(),
 }
 
+var loggerInstance *MyLogger
 var (
 	successEvent           = &ErrorEvent{0, "success: %s"}
 	fileNotOpenedEvent     = &ErrorEvent{1, "couldn't open the requested file: %s"}
@@ -62,6 +63,14 @@ func prepareLogFile() (*os.File, error) {
 	}
 
 	return f, nil
+}
+
+func GetLogger() *MyLogger {
+	if loggerInstance == nil {
+		loggerInstance = NewLogger()
+	}
+
+	return loggerInstance
 }
 
 func (l *MyLogger) SuccessLog(context string) {

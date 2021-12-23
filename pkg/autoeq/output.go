@@ -24,7 +24,7 @@ func AutoeqToEasyEffects(configPath string) outputWrapper {
 	lines, err := OpenParametricData(configPath)
 
 	if err != nil {
-		NewLogger().FileNotOpenedLog(configPath)
+		GetLogger().FileNotOpenedLog(configPath)
 	}
 
 	preamp := GetPreamp(lines[0])

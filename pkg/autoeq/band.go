@@ -40,7 +40,7 @@ func correctOutOfBounds(arg *float32, lower, upper float32) bool {
 }
 
 func NewBand(freq, gain, quality float32, band_type string) band {
-	logger := NewLogger()
+	logger := GetLogger()
 
 	if correctOutOfBounds(&freq, minFreq, maxFreq) {
 		logger.InvalidArgRangeLog("freq")

@@ -60,5 +60,5 @@ func init() {
 		defer cli.Close()
 	}
 
-	NewLogger().ConfigInfoLog(logPathEnvVar, currentLogPath)
+	GetLogger().ConfigInfoLog(logPathEnvVar, currentLogPath)
 }
