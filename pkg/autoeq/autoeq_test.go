@@ -1,6 +1,9 @@
 package autoeq
 
 import (
+	"bufio"
+	"encoding/json"
+	"fmt"
 	"os"
 	"reflect"
 	"strconv"
@@ -73,4 +76,46 @@ func TestExportEasyEffectsProfile(t *testing.T) {
 	if dirErr != nil {
 		assert.FailNow("Error while cleaning up!")
 	}
+}
+
+func TestLogWrapper(t *testing.T) {
+	assert := assert.New((t))
+	testLogPath := "/tmp/go-autoeq-test.log"
+	logMsg := "testing log msg"
+	var testLogEntry map[string]interface{}
+	var testLog []map[string]interface{}
+
+	os.Setenv(logPathEnvVar, testLogPath)
+	logger := GetLogger()
+	logger.SuccessLog(logMsg)
+
+	f, err := os.Open(testLogPath)
+	assert.Nilf(err, "Error while opening test log %s", testLogPath)
+
+	sc := bufio.NewScanner(f)
+	for sc.Scan() {
+		json.Unmarshal([]byte(sc.Bytes()), &testLogEntry)
+		testLog = append(testLog, testLogEntry)
+	}
+
+	actualMsg := testLog[len(testLog)-1]["message"]
+	expectedMsg := fmt.Sprintf(successEvent.msg, logMsg)
+	assert.EqualValuesf(expectedMsg, actualMsg, "Couldn't find expected log in %s", testLogPath)
+
+	defer f.Close()
+}
+
+func TestGetConfig(t *testing.T) {
+	assert := assert.New(t)
+	currentLogPathEnv := os.Getenv(logPathEnvVar)
+	config := GetConfig()
+	var expectedLogPath string
+
+	if currentLogPathEnv != "" {
+		expectedLogPath = currentLogPathEnv
+	} else {
+		expectedLogPath = defaultLogPath
+	}
+
+	assert.Equal(expectedLogPath, config.logpath, "Logpath is not being configured as expected")
 }
