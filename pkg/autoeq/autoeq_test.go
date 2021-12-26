@@ -78,14 +78,30 @@ func TestExportEasyEffectsProfile(t *testing.T) {
 	}
 }
 
+func TestGetConfig(t *testing.T) {
+	assert := assert.New(t)
+	currentLogPathEnv := os.Getenv(logPathEnvVar)
+	config := GetConfig()
+	var expectedLogPath string
+
+	if currentLogPathEnv != "" {
+		expectedLogPath = currentLogPathEnv
+	} else {
+		expectedLogPath = defaultLogPath
+	}
+
+	assert.Equal(expectedLogPath, config.logpath, "Logpath is not being configured as expected")
+}
+
 func TestLogWrapper(t *testing.T) {
-	assert := assert.New((t))
-	testLogPath := "/tmp/go-autoeq-test.log"
+	assert := assert.New(t)
 	logMsg := "testing log msg"
 	var testLogEntry map[string]interface{}
 	var testLog []map[string]interface{}
 
-	os.Setenv(logPathEnvVar, testLogPath)
+	testLogPath := os.Getenv(logPathEnvVar)
+	assert.NotEmpty(testLogPath, "Test LogPath env-var not set")
+
 	logger := GetLogger()
 	logger.SuccessLog(logMsg)
 
@@ -103,19 +119,4 @@ func TestLogWrapper(t *testing.T) {
 	assert.EqualValuesf(expectedMsg, actualMsg, "Couldn't find expected log in %s", testLogPath)
 
 	defer f.Close()
-}
-
-func TestGetConfig(t *testing.T) {
-	assert := assert.New(t)
-	currentLogPathEnv := os.Getenv(logPathEnvVar)
-	config := GetConfig()
-	var expectedLogPath string
-
-	if currentLogPathEnv != "" {
-		expectedLogPath = currentLogPathEnv
-	} else {
-		expectedLogPath = defaultLogPath
-	}
-
-	assert.Equal(expectedLogPath, config.logpath, "Logpath is not being configured as expected")
 }
