@@ -1,6 +1,9 @@
 package autoeq
 
 import (
+	"bufio"
+	"encoding/json"
+	"fmt"
 	"os"
 	"reflect"
 	"strconv"
@@ -14,12 +17,14 @@ func TestOpenParametricData(t *testing.T) {
 	t.Log("Parametric EQ config reading test")
 
 	fixture := "../../docs/examples/AutoEQ_parametric.txt"
-	returnedLines := OpenParametricData(fixture)
+	returnedLines, err := OpenParametricData(fixture)
+	assert.Nil(err, "Error while opening parametric data")
+
 	returnedLinesType := reflect.TypeOf(returnedLines).String()
 	wantedLen := 11
 
-	assert.Equal(len(returnedLines), wantedLen, "Wrong number of bands read")
-	assert.Equal(returnedLinesType, "[]string", "Expected []string but found "+returnedLinesType)
+	assert.Equal(wantedLen, len(returnedLines), "Wrong number of bands read")
+	assert.Equal("[]string", returnedLinesType, "Expected []string but found "+returnedLinesType)
 }
 
 func TestCreateBandMap(t *testing.T) {
@@ -27,15 +32,15 @@ func TestCreateBandMap(t *testing.T) {
 	t.Log("Band map creation test")
 
 	fixture := []band{
-		NewBand(10.0, 5.0, 1, "Bell"),
-		NewBand(5.0, 10.0, 0.7, "Low Shelf"),
+		NewBand(maxFreq, maxGain, maxQuality, "Bell"),
+		NewBand(minFreq, minGain, minQuality, "Low Shelf"),
 	}
 	returnedBandMap := CreateBandMap(fixture)
 	wantedKey := "band1"
 	wantedType := "Low Shelf"
 
 	assert.Equal(len(returnedBandMap), len(fixture), "Wrong number of bands in map")
-	assert.Equal(returnedBandMap[wantedKey].Band_type, wantedType, "Error assigning keys to bands")
+	assert.Equal(returnedBandMap[wantedKey].BandType, wantedType, "Error assigning keys to bands")
 }
 
 func TestGenerateBands(t *testing.T) {
@@ -43,14 +48,14 @@ func TestGenerateBands(t *testing.T) {
 	t.Log("Testing the generation of bands")
 
 	fixture := []string{
-		"Filter 1: ON PK Fc 4871 Hz Gain 22.1 dB Q 0.65",
+		"Filter 1: ON PK Fc 4871 Hz Gain 20.0 dB Q 0.65",
 	}
 	returnedBands := GenerateBands(fixture)
-	wantedBand := NewBand(4871, 22.1, 0.65, "Bell")
+	wantedBand := NewBand(4871, maxGain, 0.65, "Bell")
 	wantedBandsLen := len(fixture)
 
-	assert.Equal(len(returnedBands), wantedBandsLen, "Wrong number of bands generated")
-	assert.Equal(returnedBands[0], wantedBand, "Unexpected generated band")
+	assert.Equal(wantedBandsLen, len(returnedBands), "Wrong number of bands generated")
+	assert.Equal(wantedBand, returnedBands[0], "Unexpected generated band")
 }
 
 func TestExportEasyEffectsProfile(t *testing.T) {
@@ -65,12 +70,53 @@ func TestExportEasyEffectsProfile(t *testing.T) {
 		assert.FailNow("Error while trying to cd to GOPATH")
 	}
 
-	ExportEasyEffectsProfile(o, tmpFile)
-
-	assert.DirExists("profiles/EasyEffects", "Export path not created!")
-	assert.FileExists("profiles/EasyEffects/"+tmpFile+".json", "Exported file not created!")
+	err2 := ExportEasyEffectsProfile(o, tmpFile)
+	assert.Nil(err2, "Exported path/"+tmpFile+".json not created!")
 	dirErr := os.RemoveAll("profiles")
 	if dirErr != nil {
 		assert.FailNow("Error while cleaning up!")
 	}
+}
+
+func TestGetConfig(t *testing.T) {
+	assert := assert.New(t)
+	currentLogPathEnv := os.Getenv(logPathEnvVar)
+	config := GetConfig()
+	var expectedLogPath string
+
+	if currentLogPathEnv != "" {
+		expectedLogPath = currentLogPathEnv
+	} else {
+		expectedLogPath = defaultLogPath
+	}
+
+	assert.Equal(expectedLogPath, config.logpath, "Logpath is not being configured as expected")
+}
+
+func TestLogWrapper(t *testing.T) {
+	assert := assert.New(t)
+	logMsg := "testing log msg"
+	var testLogEntry map[string]interface{}
+	var testLog []map[string]interface{}
+
+	testLogPath := os.Getenv(logPathEnvVar)
+	assert.NotEmpty(testLogPath, "Test LogPath env-var not set")
+
+	logger := GetLogger()
+	logger.SuccessLog(logMsg)
+
+	f, err := os.Open(testLogPath)
+	assert.Nilf(err, "Error while opening test log %s", testLogPath)
+
+	sc := bufio.NewScanner(f)
+	for sc.Scan() {
+		json.Unmarshal([]byte(sc.Bytes()), &testLogEntry)
+		testLog = append(testLog, testLogEntry)
+	}
+
+	actualMsg := testLog[len(testLog)-1]["message"]
+	expectedMsg := fmt.Sprintf(successEvent.msg, logMsg)
+	assert.EqualValuesf(expectedMsg, actualMsg, "Couldn't find expected log in %s", testLogPath)
+
+	defer f.Close()
 }

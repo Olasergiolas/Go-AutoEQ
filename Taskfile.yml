@@ -21,6 +21,8 @@ tasks:
   test:
     cmds:
       - go test -v ./...
+    env:
+      LOGPATH: /tmp/go-autoeq-test.log
 
   fmt:
     cmds:

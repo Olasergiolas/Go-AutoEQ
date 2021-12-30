@@ -1,9 +1,9 @@
 package autoeq
 
 const (
-	DefaultEqMode        string  = "IIR"
-	DefaultSplitChannels bool    = false
-	DefaultOutputGain    float32 = 0.0
+	defaultEqMode        string  = "IIR"
+	defaultSplitChannels bool    = false
+	defaultOutputGain    float32 = 0.0
 )
 
 type equalizer struct {
@@ -18,6 +18,6 @@ type equalizer struct {
 
 func NewEq(inputGain float32, bands []band) equalizer {
 	bandMap := CreateBandMap(bands)
-	eq := equalizer{inputGain, DefaultOutputGain, bandMap, bandMap, DefaultEqMode, len(bandMap), DefaultSplitChannels}
+	eq := equalizer{inputGain, defaultOutputGain, bandMap, bandMap, defaultEqMode, len(bandMap), defaultSplitChannels}
 	return eq
 }
